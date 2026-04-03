@@ -8,6 +8,7 @@ A Tampermonkey userscript that injects table name and column name autocompletion
 
 - Automatically extracts table names and column names from the problem description into the editor autocomplete
 - Shows column types inline next to each suggestion (e.g. `int`, `varchar`)
+- Suggests MySQL keywords; adapts to uppercase or lowercase based on what you type
 - Supports both `leetcode.cn` and `leetcode.com`
 
 ## Installation

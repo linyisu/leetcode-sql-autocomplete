@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LeetCode SQL Autocomplete
 // @namespace    https://github.com/linyisu/leetcode-sql-autocomplete
-// @version      1.0.3
+// @version      1.1.0
 // @author       linyisu
 // @match        https://leetcode.cn/problems/*
 // @match        https://leetcode.com/problems/*
@@ -11,6 +11,47 @@
 
 (function () {
   'use strict';
+
+  const KEYWORDS = [
+    // query
+    'SELECT', 'FROM', 'WHERE', 'AS', 'DISTINCT', 'LIMIT', 'OFFSET', 'ALL', 'ANY',
+    // join
+    'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'CROSS JOIN', 'NATURAL JOIN', 'ON', 'USING',
+    // logic / comparison
+    'AND', 'OR', 'NOT', 'IN', 'NOT IN', 'EXISTS', 'NOT EXISTS',
+    'BETWEEN', 'LIKE', 'REGEXP', 'IS NULL', 'IS NOT NULL', 'NULL',
+    // grouping / ordering
+    'GROUP BY', 'HAVING', 'ORDER BY', 'ASC', 'DESC',
+    // set operations
+    'UNION', 'UNION ALL', 'INTERSECT', 'EXCEPT',
+    // CTE
+    'WITH', 'RECURSIVE',
+    // conditional
+    'CASE', 'WHEN', 'THEN', 'ELSE', 'END',
+    'IF', 'IFNULL', 'NULLIF', 'COALESCE', 'GREATEST', 'LEAST', 'ISNULL',
+    // aggregate
+    'COUNT', 'SUM', 'AVG', 'MAX', 'MIN',
+    'GROUP_CONCAT', 'SEPARATOR',
+    // math
+    'ROUND', 'FLOOR', 'CEIL', 'CEILING', 'ABS', 'MOD', 'POW', 'POWER', 'SQRT', 'TRUNCATE', 'SIGN',
+    // string
+    'CONCAT', 'CONCAT_WS', 'LENGTH', 'CHAR_LENGTH', 'SUBSTRING', 'SUBSTR',
+    'LEFT', 'RIGHT', 'TRIM', 'LTRIM', 'RTRIM', 'UPPER', 'LOWER',
+    'REPLACE', 'LOCATE', 'INSTR', 'LPAD', 'RPAD', 'REPEAT', 'REVERSE', 'FORMAT',
+    // type conversion
+    'CAST', 'CONVERT',
+    // date / time
+    'NOW', 'CURDATE', 'CURTIME', 'CURRENT_DATE', 'CURRENT_TIMESTAMP',
+    'DATE', 'DATE_ADD', 'DATE_SUB', 'DATEDIFF', 'DATE_FORMAT', 'STR_TO_DATE',
+    'TIMESTAMPDIFF', 'EXTRACT',
+    'YEAR', 'MONTH', 'DAY', 'HOUR', 'MINUTE', 'SECOND', 'WEEK', 'QUARTER', 'LAST_DAY',
+    // window functions
+    'RANK', 'DENSE_RANK', 'ROW_NUMBER', 'NTILE',
+    'LAG', 'LEAD', 'FIRST_VALUE', 'LAST_VALUE', 'NTH_VALUE',
+    'PERCENT_RANK', 'CUME_DIST',
+    'OVER', 'PARTITION BY', 'ROWS BETWEEN', 'RANGE BETWEEN',
+    'UNBOUNDED PRECEDING', 'CURRENT ROW', 'UNBOUNDED FOLLOWING',
+  ];
 
   function extractSchema() {
     const tableNames = [];
@@ -164,9 +205,20 @@
             endColumn: position.column,
           };
 
-          const schemaLabels = new Set(
-            items.map(i => typeof i.label === 'string' ? i.label : i.label.label)
-          );
+          const isLower = currentWord.length > 0 && /[a-z]/.test(currentWord) && currentWord === currentWord.toLowerCase();
+          const kwItems = KEYWORDS.map(kw => ({
+            label: isLower ? kw.toLowerCase() : kw,
+            kind: CompletionItemKind.Keyword,
+            insertText: isLower ? kw.toLowerCase() : kw,
+            sortText: '5_' + kw,
+            range,
+          }));
+
+          const schemaLabels = new Set([
+            ...items.map(i => typeof i.label === 'string' ? i.label : i.label.label),
+            ...KEYWORDS,
+            ...KEYWORDS.map(kw => kw.toLowerCase()),
+          ]);
           const docWords = new Set(
             (model.getValue().match(/\b[a-zA-Z_]\w*\b/g) || [])
               .filter(w => w.length > 1 && w !== currentWord && !schemaLabels.has(w))
@@ -175,6 +227,7 @@
           return {
             suggestions: [
               ...items.map(item => ({ ...item, range })),
+              ...kwItems,
               ...[...docWords].map(w => ({
                 label: w,
                 kind: CompletionItemKind.Text,
