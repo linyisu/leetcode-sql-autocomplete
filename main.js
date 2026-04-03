@@ -1,13 +1,11 @@
 // ==UserScript==
 // @name         LeetCode SQL Autocomplete
-// @namespace    linyisu
-// @version      1.0.2
-// @updateURL    https://raw.githubusercontent.com/linyisu/leetcode-sql-autocomplete/main/main.js
-// @downloadURL  https://raw.githubusercontent.com/linyisu/leetcode-sql-autocomplete/main/main.js
-// @description  通过 Monaco CompletionItemProvider API 注册表名/列名
+// @namespace    https://github.com/linyisu/leetcode-sql-autocomplete
+// @version      1.0.3
 // @author       linyisu
 // @match        https://leetcode.cn/problems/*
 // @match        https://leetcode.com/problems/*
+// @license      MIT
 // @grant        none
 // ==/UserScript==
 
