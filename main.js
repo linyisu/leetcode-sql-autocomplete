@@ -6,6 +6,7 @@
 // @match        https://leetcode.cn/problems/*
 // @match        https://leetcode.com/problems/*
 // @license      MIT
+// @description  一个为力扣 SQL 题目编辑器自动注入表名、列名的插件
 // @grant        none
 // ==/UserScript==
 
@@ -163,7 +164,7 @@
 
   function registerProvider(monaco, tableNames, columns) {
     if (disposable) {
-      try { disposable.dispose(); } catch (_) {}
+      try { disposable.dispose(); } catch (_) { }
       disposable = null;
     }
 

@@ -1,20 +1,20 @@
-# LeetCode SQL Autocomplete
+## LeetCode SQL Autocomplete
 
-A Tampermonkey userscript that injects table name and column name autocompletion into the LeetCode SQL editor.
+A userscript that automatically injects table names and column names into the LeetCode SQL editor.
 
-[中文文档](README.zh.md)
+[中文](README.zh.md)
 
-## Features
+### Features
 
-- Automatically extracts table names and column names from the problem description into the editor autocomplete
-- Shows column types inline next to each suggestion (e.g. `int`, `varchar`)
-- Suggests MySQL keywords; adapts to uppercase or lowercase based on what you type
+- Automatically extracts table and column names from the problem description and injects them into the editor's completion provider
+- Inline type hints next to column names (e.g. `int`, `varchar`)
+- Suggests common MySQL keywords; automatically adapts casing based on your input
 - Supports both `leetcode.cn` and `leetcode.com`
 
-## Installation
+### Installation
 
-[Install from GreasyFork](https://greasyfork.org/zh-CN/scripts/572383-leetcode-sql-autocomplete)
+[Install from GreasyFork](https://greasyfork.org/zh-CN/scripts/574888-leetcode-sql-autocomplete)
 
-## Usage
+### Usage
 
-Open any SQL problem on LeetCode. Table names and column names from the problem will automatically appear in the autocomplete list as you type.
+Open any LeetCode SQL problem. As you type in the editor, table and column names from the problem description will automatically appear in the completion list.
