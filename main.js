@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LeetCode SQL Autocomplete
 // @namespace    https://github.com/linyisu/leetcode-sql-autocomplete
-// @version      1.1.0
+// @version      1.1.1
 // @author       linyisu
 // @match        https://leetcode.cn/problems/*
 // @match        https://leetcode.com/problems/*
